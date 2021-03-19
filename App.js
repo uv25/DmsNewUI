@@ -30,15 +30,8 @@ const App = () => {
           name="Home"
           component={HomeScreen}
           options={
-            { title: 'DMS',  
-              headerStyle: {backgroundColor: '#292F35', textColor: '#FFFFFF',
-              headerRight: () => (
-                <Button
-                  onPress={() => alert('This is a button!')}
-                  title="Info"
-                  color="#fff"
-                />
-              ),}}}
+            { title: 'DMS' }
+          }
           
         />
         

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView, StatusBar, StyleSheet,
   Text, View, FlatList, TouchableOpacity } from 'react-native';
 
 import FA5 from 'react-native-vector-icons/MaterialIcons'
 import {widthPercentageToDP as wp2dp, heightPercentageToDP as hp2dp} from 'react-native-responsive-screen';
+import {DATA, DATA2} from '../Data'
+
 
 const itemMenuOnClick = ()=> {
   console.log("Item menu on click working");
@@ -13,6 +15,7 @@ const itemMenuOnClick = ()=> {
 const itemOnClick = ()=> {
   console.log('Item clicked');
 }
+
 
 const Item2 = ({ title }) => (
   <TouchableOpacity >
@@ -31,7 +34,7 @@ const Item2 = ({ title }) => (
 const Item = ({ title }) => (
   <TouchableOpacity style={styles.item} onPress={ ()=>{itemOnClick()} }>
     <FA5 style = {{position: 'absolute', right: 0, top: 5}} 
-        name='more-vert' 
+        name='more-vert'
         color={'#FFFFFF'} 
         size={20}
         onPress={()=> itemMenuOnClick()}/>
@@ -69,15 +72,39 @@ const Home = () => {
   const renderItem2 = ({item}) => (
     <Item2 title = {item.title} />
   );
+
+  const renderGridIcon = () => {
+    return(
+      gridState?<FA5 name="grid-on" color={'#F9B31D'} size={30} solid />: <FA5 name="grid-off" color={'#F9B31D'} size={30} solid />
+    );
+  }
+
+  const onGridPressed = () => {
+    console.log("Grid Pressed");
+    //renderGridIcon();
+    if(gridState == true)
+    {
+      setGridState(false)
+    }else{
+      setGridState(true)
+    }
+  }
+
+  const [gridState, setGridState] = useState(true);
+
   return (
-    <>
+    <View style = {{backgroundColor: '#292F35', flex: 1}}>
       <SafeAreaView style = {styles.containerTop}>
-      <FlatList style = {{margin: 10}}
+      <FlatList style = {{margin: 0}}
           horizontal
           data={DATA2}
           renderItem={renderItem2}
           keyExtractor={item => item.id}
           />
+        <TouchableOpacity
+          onPress={()=> {onGridPressed()}}>
+          {renderGridIcon()}
+        </TouchableOpacity>
       </SafeAreaView>
       
       <SafeAreaView style={styles.containerBottom}>
@@ -90,23 +117,29 @@ const Home = () => {
         
       />
     </SafeAreaView>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   
   containerTop: {
-    
+    flexDirection: 'row',
     backgroundColor: '#292F35',
-    borderTopColor: '#FFFFFF15',
-    borderBottomColor: '#FFFFFF15'
+    borderTopColor: '#FFFFFF65',
+    borderBottomColor: '#FFFFFF65',
+    margin: 5,
+    marginTop: 10,
+    marginBottom: 10,
+    alignItems: 'center'
   },
   containerBottom: {
     flex: 1,
     
     backgroundColor: '#292F35',
-    borderTopColor: '#FFFFFF15'
+    borderTopColor: '#FFFFFF15',
+    borderBottomColor: '#FFFFFF15',
+    borderWidth: 2,
   },
   item: {
     backgroundColor: '#FFFFFF50',
@@ -127,62 +160,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const DATA2 = [
-  {
-    id: '1',
-    title: 'root'
-  },
-  {
-    id: '2',
-    title: 'inbox'
-  }
-];
 
-const DATA = [
-  {
-    id: '1',
-    title: '1st Item',
-    type: 'folder'
-  },
-  {
-    id: '2',
-    title: '2 Item',
-    type: 'folder'
-  },
-  {
-    id: '3',
-    title: '3rd Item',
-    type: 'folder'
-  },
-  {
-    id: '4',
-    title: '4th Item',
-    type: 'folder'
-  },
-  {
-    id: '5',
-    title: '5th Item',
-    type: 'folder'
-  },
-  {
-    id: '6',
-    title: '6th Item',
-    type: 'folder'
-  },
-  {
-    id: '7',
-    title: '7th Item',
-    type: 'file'
-  },
-  {
-    id: '8',
-    title: '8th Item',
-    type: 'file'
-  },
-  {
-    id: '9',
-    title: '9th Item',
-    type: 'file'
-  },
-];
 export default Home;
