@@ -31,7 +31,7 @@ const Item2 = ({ title }) => (
   </TouchableOpacity>
 );
 
-const Item = ({ title }) => (
+const GridItem = ({ title }) => (
   <TouchableOpacity style={styles.item} onPress={ ()=>{itemOnClick()} }>
     <FA5 style = {{position: 'absolute', right: 0, top: 5}} 
         name='more-vert'
@@ -57,6 +57,24 @@ const Item = ({ title }) => (
   </TouchableOpacity>
 );
 
+const ListItem = ({ title }) => (
+  <TouchableOpacity style={styles.listItem} onPress={ ()=>{itemOnClick()} }>
+    
+    <View style = {{flexDirection: 'row', alignSelf: 'flex-start', borderColor: 'red', borderWidth: 1}}>
+      <View><FA5 name="folder" color={'#0084C4'} size={50} solid /></View>
+
+      <View style={{margin: 5, marginLeft: 15}}>
+        <Text style = {styles.title}>{title}</Text>
+        <Text style = {styles.secondaryTitle}>Secondary Text</Text>
+      </View>
+
+    </View>
+    <View style = {{position: 'absolute', right:4, top: 5}}>
+      <FA5 name="more-vert" color={'#FFFFFF'} size={20} solid />
+    </View>
+  </TouchableOpacity>
+);
+
 const renderIcon = (props) => {
    let icon;
    icon = <FA5 name="folder" color={'#0084C4'} size={50} solid />;
@@ -66,7 +84,7 @@ const renderIcon = (props) => {
 const Home = () => {
   
   const renderItem = ({ item }) => (
-    <Item title={item.title} />
+    gridState?<GridItem title={item.title} />: <ListItem title={item.title} />
   );
 
   const renderItem2 = ({item}) => (
@@ -75,7 +93,7 @@ const Home = () => {
 
   const renderGridIcon = () => {
     return(
-      gridState?<FA5 name="grid-on" color={'#F9B31D'} size={30} solid />: <FA5 name="grid-off" color={'#F9B31D'} size={30} solid />
+      gridState?<FA5 name="grid-on" color={'#F9B31D'} size={27} solid />: <FA5 name="grid-off" color={'#F9B31D'} size={27} solid />
     );
   }
 
@@ -87,6 +105,15 @@ const Home = () => {
       setGridState(false)
     }else{
       setGridState(true)
+    }
+  }
+
+  const setColNo = () => {
+    if(gridState == true)
+    {
+      return 3
+    }else{
+      return 1
     }
   }
 
@@ -110,10 +137,11 @@ const Home = () => {
       <SafeAreaView style={styles.containerBottom}>
       
       <FlatList
+        key = {gridState?'grid':'list'}
         data={DATA}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        numColumns = {3}
+        numColumns = {setColNo()}
         
       />
     </SafeAreaView>
@@ -150,6 +178,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
   },
+  listItem: {
+    backgroundColor: '#FFFFFF50',
+    padding: 5,
+    margin: 5,
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
   itemContainer: {
     alignSelf: 'center',
     alignItems: 'center',
@@ -157,6 +194,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     color: '#FFFFFF',
+  },
+  secondaryTitle: {
+    fontSize: 10,
+    color: '#FFFFFF80',
   },
 });
 
